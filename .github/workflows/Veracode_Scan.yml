@@ -47,7 +47,7 @@ jobs:
         with:
           vid: ${{ secrets.VID }}
           vkey: ${{ secrets.VKEY }}
-          file: "verademo.war" 
+          file: "/home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war" 
       
   results_to_sarif:
     needs: pipeline_scan
