@@ -28,7 +28,7 @@ jobs:
     - name: Archive Artifact for Veracode
       uses: actions/upload-artifact@v3
       with:
-        name: insecure-bank.war
+        name: insecure_bank.war
         path: "/home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war"
 
   pipeline_scan:
@@ -42,7 +42,7 @@ jobs:
       - name: Get Artifact
         uses: actions/download-artifact@v3
         with:
-          name: insecure-bank.war
+          name: insecure_bank.war
   
       # Run the pipeline scan action
       - name: pipeline-scan action step
@@ -51,7 +51,7 @@ jobs:
         with:
           vid: ${{ secrets.VID }}
           vkey: ${{ secrets.VKEY }}
-          file: insecure-bank.war
+          file: insecure_bank.war
       
   results_to_sarif:
     needs: pipeline_scan
