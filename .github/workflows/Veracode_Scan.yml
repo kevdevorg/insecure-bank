@@ -23,6 +23,13 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build with Maven
       run: mvn clean package
+      
+    # Stash the compiled artifact for Veracode    
+    - name: Archive Artifact for Veracode
+      uses: actions/upload-artifact@v3
+      with:
+        name: insecure-bank.war
+        path: "/home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war"
 
   pipeline_scan:
     # needs the build step before this job will start running
@@ -31,23 +38,13 @@ jobs:
     name: pipeline scan
 
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v3
-          
-      # Stash the compiled artifact for Veracode    
-      - name: Archive Artifact for Veracode
-        uses: actions/upload-artifact@v3
-        with:
-          name: insecure-bank.war
-          path: "/home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war"
-          
       # Get the compiled binary from a previous job
       - name: Get Artifact
         uses: actions/download-artifact@v3
         with:
           name: insecure-bank.war
   
-      # run the pipeline scan action
+      # Run the pipeline scan action
       - name: pipeline-scan action step
         id: pipeline-scan
         uses: veracode/Veracode-pipeline-scan-action@pipeline-scan-beta-v0.0.4
