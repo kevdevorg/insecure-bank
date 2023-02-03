@@ -44,7 +44,7 @@ jobs:
           unzip -o pipeline-scan-LATEST.zip
           
       - name: Run Pipeline Scanner
-        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{secrets.VID}}" --veracode_api_key "${{secrets.VKEY}}" --file "insecure_bank.war" -jf "results.json" 
+        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{secrets.VID}}" --veracode_api_key "${{secrets.VKEY}}" --file "/home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war" -jf "results.json" 
       
   results_to_sarif:
     needs: pipeline_scan
