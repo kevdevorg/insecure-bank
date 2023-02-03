@@ -49,6 +49,13 @@ jobs:
   results_to_sarif:
     needs: pipeline_scan
     runs-on: self-hosted
+    
+    permissions:
+      actions: write
+      repository-projects: write
+      packages: write
+      contents: write
+      
     name: import pipeline results to sarif
     steps:
       - name: Convert pipeline scan output to SARIF format
