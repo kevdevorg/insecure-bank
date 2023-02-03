@@ -24,11 +24,6 @@ jobs:
     - name: Build with Maven
       run: mvn clean package
       
-    - name: Change permission on Artifact
-      run: |
-        chmod 777 /home/gvg/actions-runner/_work/gvg-insecure-bank/gvg-insecure-bank/target/insecure-bank.war
-        ls -a
-      
     # Stash the compiled artifact for Veracode    
     - name: Archive Artifact for Veracode
       uses: actions/upload-artifact@v3
