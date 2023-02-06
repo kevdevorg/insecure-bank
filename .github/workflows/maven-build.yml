@@ -25,8 +25,11 @@ jobs:
       - name: Build with Maven Wrapper
         run: mvn clean install
         
+      - name: Tar Artifact and Upload
+        run: tar -cvf java-app.tar "${{ github.workspace }}/target/*.war"
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: "${{ github.workspace }}/target/*.war"
+          path: "${{ github.workspace }}/*.tar"

@@ -23,6 +23,9 @@ jobs:
         with:
           name: java-app
           
+      - name: extract file from tar
+      - run: tar -xvf java-app.tar
+          
       - name: Download and Unzip the Pipeline Scanner
         run: |
           curl -sSO https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
