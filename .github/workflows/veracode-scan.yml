@@ -24,7 +24,7 @@ jobs:
           name: java-app
           
       - name: extract file from tar
-      - run: tar -xvf java-app.tar
+        run: tar -xvf java-app.tar
           
       - name: Download and Unzip the Pipeline Scanner
         run: |
