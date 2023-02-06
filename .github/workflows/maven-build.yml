@@ -21,8 +21,10 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: ${{matrix.distribution}}
           cache: maven
+          
       - name: Build with Maven Wrapper
         run: mvn clean install
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
