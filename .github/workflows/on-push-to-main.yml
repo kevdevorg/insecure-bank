@@ -1,0 +1,13 @@
+name: On push to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-build-workflow:
+    uses: ./.github/workflows/maven-build.yml
+  call-veracode-workflow:
+    uses: ./.github/workflows/veracode-scan.yml
+
