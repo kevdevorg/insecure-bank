@@ -27,7 +27,7 @@ jobs:
         
       - name: Tar Artifact and Upload
         working-directory: "${{ github.workspace }}/target/"
-        run: tar cvf java-app.tar *.war
+        run: tar cvf "${{ github.workspace }}"/java-app.tar *.war
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
