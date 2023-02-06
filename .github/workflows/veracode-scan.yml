@@ -1,8 +1,14 @@
 name: Veracode Scan
 
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }} # needed to download artifacts with github cli
+
 on:
   push:
     branches: [ "main" ]
+    
+permissions:
+  contents: read
 
 jobs:
   # Build the application and pull down the artifact for scanning
