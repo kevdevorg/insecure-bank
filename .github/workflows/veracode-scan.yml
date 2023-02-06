@@ -1,18 +1,13 @@
 name: Veracode Scan
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_call:
 
 jobs:
-  # Build the application and pull down the artifact for scanning
-  call-build-workflow:
-    uses: ./.github/workflows/maven-build.yml    
 
   veracode-pipeline-scan:
     # needs the build step before this job will start running
-    needs: call-build-workflow
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Veracode Pipeline Scan
     continue-on-error: true
 
