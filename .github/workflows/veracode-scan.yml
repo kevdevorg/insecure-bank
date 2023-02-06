@@ -1,35 +1,19 @@
-name: Build Artifact and Veracode Scan
+name: Veracode Scan
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    
-permissions: write-all
 
 jobs:
-  build:
+  # Build the application and pull down the artifact for scanning
+  call-build-workflow:
+    uses: ./.github/workflows/maven-build.yml    
 
-    runs-on: self-hosted
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build with Maven
-      run: mvn clean package
-      
-    # Stash the compiled artifact for Veracode    
-    - name: Archive Artifact for Veracode
-      uses: actions/upload-artifact@v3
-      with:
-        name: insecure_bank.war
-        path: "**/target/insecure-bank.war"
-
-  pipeline_scan:
+  veracode-pipeline-scan:
     # needs the build step before this job will start running
-    needs: build
+    needs: call-build-workflow
     runs-on: self-hosted
-    name: pipeline scan
+    name: Veracode Pipeline Scan
     continue-on-error: true
 
     steps:
@@ -37,7 +21,7 @@ jobs:
       - name: Get Artifact
         uses: actions/download-artifact@v3
         with:
-          name: insecure_bank.war
+          name: java-app
           
       - name: Download and Unzip the Pipeline Scanner
         run: |
@@ -45,17 +29,11 @@ jobs:
           unzip -o pipeline-scan-LATEST.zip
           
       - name: Run Pipeline Scanner
-        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{secrets.VID}}" --veracode_api_key "${{secrets.VKEY}}" --file "**/target/insecure-bank.war" -id "true" -jf "results.json" 
+        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{secrets.VID}}" --veracode_api_key "${{secrets.VKEY}}" --file "${{ github.workspace }}/target/*.jar" -id "true" -jf "results.json" 
       
   results_to_sarif:
-    needs: pipeline_scan
+    needs: veracode-pipeline-scan
     runs-on: self-hosted
-    
-    permissions:
-      actions: write
-      repository-projects: write
-      packages: write
-      contents: write
       
     name: import pipeline results to sarif
     steps:
