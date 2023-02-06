@@ -26,10 +26,11 @@ jobs:
         run: mvn clean install
         
       - name: Tar Artifact and Upload
-        run: tar cvf java-app $(ls "${{ github.workspace }}/target/*.war")
+        working-directory: "${{ github.workspace }}/target/"
+        run: tar cvf java-app.tar *.war
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: "${{ github.workspace }}/*.tar"
+          path: "${{ github.workspace }}/java-app.tar"
