@@ -7,20 +7,20 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: [ '17' ]
         distribution: [ 'zulu' ]
 
     steps:
-#       - uses: actions/checkout@v3
-#       - name: Set up JDK ${{matrix.java}}
-#         uses: actions/setup-java@v3
-#         with:
-#           java-version: ${{matrix.java}}
-#           distribution: ${{matrix.distribution}}
-#           cache: maven
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{matrix.java}}
+          distribution: ${{matrix.distribution}}
+          cache: maven
           
       - name: Build with Maven Wrapper
         run: mvn clean install
