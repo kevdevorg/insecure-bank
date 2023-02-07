@@ -46,11 +46,11 @@ jobs:
     needs: veracode-pipeline-scan
     runs-on: ubuntu-latest
 
-    name: import pipeline results to sarif
+    name: Import Pipeline Results to SARIF
     steps:
     
         # Grab the SARIF file from previous Job
-      - name: Get SARIF
+      - name: Grab Veracode Pipeline Results to convert to SARIF format
         uses: actions/download-artifact@v3
         with:
           name: veracode_results
@@ -64,6 +64,12 @@ jobs:
           source-base-path-1: "^com/veracode:src/main/java/com/veracode"
           source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
           finding-rule-level: "3:1:0"
+          
+      - name: Upload Veracodwe SARIF File for testing
+        uses: actions/upload-artifact@v3
+        with:
+          name: veracode_sarif_results
+          path: "${{ github.workspace }}/veracode-results.sarif"
 
       - name: upload sarif file to repository
         uses: github/codeql-action/upload-sarif@v2
