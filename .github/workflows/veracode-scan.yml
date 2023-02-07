@@ -4,9 +4,9 @@ on:
   workflow_call:
   
 permissions:
-  id-token: write
-  contents: write              # This is required for actions/checkout@v1
-  security-events: write       # To upload sarif files
+    actions: read
+    contents: read
+    security-events: write
 
 jobs:
 
