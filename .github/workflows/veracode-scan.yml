@@ -10,14 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Veracode Pipeline Scan
     continue-on-error: true
-    
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         language: [ 'java' ]
 
     steps:
-      # Get the compiled binary from a previous job
+        # Get the compiled binary from a previous job
       - name: Get Artifact
         uses: actions/download-artifact@v3
         with:
@@ -33,6 +28,25 @@ jobs:
           
       - name: Run Pipeline Scanner
         run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VID }}" --veracode_api_key "${{ secrets.VKEY }}" --file "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
+        
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: veracode_results
+          path: "${{ github.workspace }}/results.json"
+          
+  results_to_sarif:
+    needs: veracode-pipeline-scan
+    runs-on: ubuntu-latest
+
+    name: import pipeline results to sarif
+    steps:
+    
+        # Grab the SARIF file from previous Job
+      - name: Get SARIF
+        uses: actions/download-artifact@v3
+        with:
+          name: veracode_results
           
       - name: Convert pipeline scan output to SARIF format
         id: convert
