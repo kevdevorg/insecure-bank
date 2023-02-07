@@ -9,7 +9,6 @@ jobs:
     # needs the build step before this job will start running
     runs-on: ubuntu-latest
     name: Veracode Pipeline Scan
-    continue-on-error: true
 
     steps:
         # Get the compiled binary from a previous job
@@ -28,6 +27,7 @@ jobs:
           
       - name: Run Pipeline Scanner
         run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VID }}" --veracode_api_key "${{ secrets.VKEY }}" --file "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
+        continue-on-error: true
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
