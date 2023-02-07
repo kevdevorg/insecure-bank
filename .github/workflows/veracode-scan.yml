@@ -49,11 +49,11 @@ jobs:
     name: import pipeline results to sarif
     steps:
     
-        # Grab the SARIF file from previous Job
-      - name: Get SARIF
-        uses: actions/download-artifact@v3
-        with:
-          name: veracode_results
+#         # Grab the SARIF file from previous Job
+#       - name: Get SARIF
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: veracode_results
           
       - name: Convert pipeline scan output to SARIF format
         id: convert
