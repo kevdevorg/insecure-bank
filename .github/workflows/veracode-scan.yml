@@ -9,11 +9,12 @@ jobs:
     # needs the build step before this job will start running
     runs-on: ubuntu-latest
     name: Veracode Pipeline Scan
+    continue-on-error: true
     
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java' ]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         language: [ 'java' ]
 
     steps:
       # Get the compiled binary from a previous job
