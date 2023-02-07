@@ -6,6 +6,9 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   
+permissions:
+  security-events: write
+  
 jobs:
 
   veracode-pipeline-scan:
@@ -63,13 +66,5 @@ jobs:
 
       - name: upload sarif file to repository
         uses: github/codeql-action/upload-sarif@v2
-        continue-on-error: true
         with: # Path to SARIF file relative to the root of the repository
           sarif_file: veracode-results.sarif
-      
-      - name: TEST
-        run: |
-          gh api \
-            --method PUT \
-            -H "Accept: application/vnd.github+json" \
-            /repos/kevdevorg/insecure-bank/automated-security-fixes
