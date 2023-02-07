@@ -11,5 +11,5 @@ jobs:
   call-veracode-workflow:
     uses: ./.github/workflows/veracode-scan.yml
     needs: call-build-workflow
-    secrets: inherit
+    # secrets: inherit
 
