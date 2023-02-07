@@ -3,6 +3,9 @@ name: Veracode Scan
 on:
   workflow_call:
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  
 jobs:
 
   veracode-pipeline-scan:
@@ -59,8 +62,14 @@ jobs:
           finding-rule-level: "3:1:0"
 
       - name: upload sarif file to repository
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         uses: github/codeql-action/upload-sarif@v2
+        continue-on-error: true
         with: # Path to SARIF file relative to the root of the repository
           sarif_file: veracode-results.sarif
+      
+      - name: TEST
+        run: |
+          gh api \
+            --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            /repos/kevdevorg/insecure-bank/automated-security-fixes
