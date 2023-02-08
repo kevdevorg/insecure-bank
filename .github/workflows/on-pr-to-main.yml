@@ -1,12 +1,12 @@
-name: On PR to main
+# name: On PR to main
 
-on:
-  pull_request:
-    branches:
-      - main
+# on:
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  call-build-workflow:
-    uses: ./.github/workflows/maven-build.yml
-  call-veracode-workflow:
-    uses: ./.github/workflows/veracode-scan.yml 
+# jobs:
+#   call-build-workflow:
+#     uses: ./.github/workflows/maven-build.yml
+#   call-veracode-workflow:
+#     uses: ./.github/workflows/veracode-scan.yml 
