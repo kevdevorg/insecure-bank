@@ -1,11 +1,11 @@
-name: On push to any branch
+# name: On push to any branch
 
-on:
-  pull_request:
-    branches: [ '**' ]
+# on:
+#   pull_request:
+#     branches: [ '**' ]
 
-jobs:
-  call-build-workflow:
-    uses: ./.github/workflows/maven-build.yml
-  call-veracode-workflow:
-    uses: ./.github/workflows/veracode-scan.yml
+# jobs:
+#   call-build-workflow:
+#     uses: ./.github/workflows/maven-build.yml
+#   call-veracode-workflow:
+#     uses: ./.github/workflows/veracode-scan.yml
