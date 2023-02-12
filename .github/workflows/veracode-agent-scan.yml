@@ -12,9 +12,10 @@ jobs:
     steps:
         # Get the compiled binary from a previous job
       - name: Download and Unzip the Pipeline Scanner
-        run: |
-          curl -sSL https://www.sourceclear.com/install | sh
-          export SRCCLR_API_TOKEN=${{ secrets.SCA_TOKEN }}  
+        run: curl -sSL https://www.sourceclear.com/install | sh
+          
+      - name: Set the SCA Token
+        run: export SRCCLR_API_TOKEN=${{ secrets.SCA_TOKEN }}  
           
       - name: Checkout 
         uses: actions/checkout@v3
