@@ -1,0 +1,25 @@
+name: Veracode SCA Scan
+
+on:
+  workflow_call:
+  
+jobs:
+
+  veracode-agent-scan:
+    runs-on: ubuntu-latest
+    name: Veracode SCA Agent Scan
+
+    steps:
+        # Get the compiled binary from a previous job
+      - name: Download and Unzip the Pipeline Scanner
+        run: |
+          curl -sSL https://www.sourceclear.com/install | sh
+          srcclr activate | ${{ secrets.SCA_TOKEN }}
+          
+      - name: Scan by checkout
+        run: srcclr scan .
+        
+      - name: Scan by URL
+        run: echo "${{ github.GITHUB_SERVER_URL }} / ${{ github.GITHUB_REPOSITORY }}
+          
+          
