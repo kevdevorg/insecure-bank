@@ -17,7 +17,9 @@ jobs:
           export SRCCLR_API_TOKEN=${{ secrets.SCA_TOKEN }}     
           
       - name: Scan by checkout
-        run: srcclr scan .
+        run: |
+          ls -a
+          srcclr scan .
         
       - name: Scan by URL
         run: echo "${{ github.GITHUB_SERVER_URL }} / ${{ github.GITHUB_REPOSITORY }}
