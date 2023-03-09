@@ -1,10 +1,6 @@
 name: veracode joseph
 
-on:
-  push:
-    branches:
-      - main
-      - joseph-veracode
+on: [ push ]
 
 jobs:
 #   call-build-workflow:
