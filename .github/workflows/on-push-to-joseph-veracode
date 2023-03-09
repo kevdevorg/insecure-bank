@@ -1,7 +1,6 @@
 name: On push to joseph-veracode
 
 on:
-  workflow_call:
   push:
     branches: ['joseph-veracode']
   pull_request:
