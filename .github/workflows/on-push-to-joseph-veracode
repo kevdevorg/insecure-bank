@@ -2,8 +2,9 @@ name: On push to joseph-veracode
 
 on:
   push:
-    branches:
-      - joseph-veracode
+    branches: ['joseph-veracode']
+  pull_request:
+    branches: [ '**' ]
 
 jobs:
 #   call-build-workflow:
