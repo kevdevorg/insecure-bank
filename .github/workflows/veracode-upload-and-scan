@@ -1,4 +1,4 @@
-name: Veracode Scan
+name: Veracode-upload-and-scan
 
 on:
   workflow_call:
