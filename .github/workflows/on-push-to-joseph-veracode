@@ -16,5 +16,5 @@ jobs:
 #     needs: call-build-workflow
 #     secrets: inherit
     call-veracode-agent-scan-workflow:
-      uses: ./.github/workflows/veracode-upload-and-scan
+      uses: ./.github/workflows/veracode-upload-and-scan.yml
       secrets: inherit
