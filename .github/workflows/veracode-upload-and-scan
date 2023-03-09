@@ -1,0 +1,76 @@
+name: Veracode Scan
+
+on:
+  workflow_call:
+
+
+  
+permissions:
+  security-events: write
+  
+jobs:
+
+  veracode-pipeline-scan:
+    # needs the build step before this job will start running
+    runs-on: ubuntu-latest
+    name: Veracode Pipeline Scan
+
+    steps:
+        # Get the compiled binary from a previous job
+      - name: Get Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: java-app
+          
+      - name: extract file from tar
+        run: tar -xvf java-app.tar
+          
+      - name: Download and Unzip the Veracode Java API wrapper
+        run: |
+          curl -sSO https://repo1.maven.org/maven2/com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/23.3.11.0/vosp-api-wrappers-java-23.3.11.0-dist.zip
+          unzip -o vosp-api-wrappers-java-23.3.11.0-dist.zip
+          
+      - name: Run veracode-upload-and-scan
+        run: java -Dpipeline.debug=true -jar VeracodeJavaAPI.jar -action uploadandscan -vid "${{ secrets.VID }}" -vkey "${{ secrets.VKEY }}" -appname "java-app" -createprofile "true" -teams myteam -criticality VeryHigh -sandboxname "mysandbox" -createsandbox "true" -version "java-app" -filepath "${{ github.workspace }}/insecure-bank.war"  -id "true" -jf "results.json" 
+        # run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VID }}" --veracode_api_key "${{ secrets.VKEY }}" --file "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
+        continue-on-error: true
+        
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: veracode_results
+          path: "${{ github.workspace }}/results.json"
+          
+  results_to_sarif:
+    needs: veracode-pipeline-scan
+    runs-on: ubuntu-latest
+
+    name: Import Pipeline Results to SARIF
+    steps:
+    
+        # Grab the SARIF file from previous Job
+      - name: Grab Veracode Pipeline Results to convert to SARIF format
+        uses: actions/download-artifact@v3
+        with:
+          name: veracode_results
+          
+      - name: Convert pipeline scan output to SARIF format
+        id: convert
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
+        with:
+          pipeline-results-json: results.json
+          output-results-sarif: veracode-results.sarif
+          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
+          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
+          finding-rule-level: "3:1:0"
+          
+      - name: Upload Veracodwe SARIF File for testing
+        uses: actions/upload-artifact@v3
+        with:
+          name: veracode_sarif_results
+          path: "${{ github.workspace }}/veracode-results.sarif"
+
+      - name: upload sarif file to repository
+        uses: github/codeql-action/upload-sarif@v2
+        with: # Path to SARIF file relative to the root of the repository
+          sarif_file: veracode-results.sarif
