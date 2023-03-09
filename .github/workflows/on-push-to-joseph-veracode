@@ -2,7 +2,7 @@ name: On push to joseph-veracode
 
 on:
   push:
-    branches: ['joseph-veracode']
+    branches: [ '**' ]
   pull_request:
     branches: [ '**' ]
 
