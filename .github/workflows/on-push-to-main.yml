@@ -10,13 +10,13 @@ jobs:
       uses: ./.github/workflows/maven-build.yml
 #   call-codeql-workflow:
 #     uses: ./.github/workflows/codeql.yml  
-#   call-veracode-workflow:
-#     uses: ./.github/workflows/veracode-scan.yml
-#     needs: call-build-workflow
-#     secrets: inherit
-    call-veracode-agent-scan-workflow:
-      uses: ./.github/workflows/veracode-agent-scan.yml
+    call-veracode-workflow:
+      uses: ./.github/workflows/veracode-scan.yml
+      needs: call-build-workflow
       secrets: inherit
+#   call-veracode-agent-scan-workflow:
+#     uses: ./.github/workflows/veracode-agent-scan.yml
+#     secrets: inherit
     call-veracode-upload-and-scan-workflow:
       uses: ./.github/workflows/veracode-upload-and-scan.yml
       needs: call-build-workflow
