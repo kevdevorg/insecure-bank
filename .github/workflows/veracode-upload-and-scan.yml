@@ -58,7 +58,7 @@ jobs:
         id: convert
         uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
         with:
-          pipeline-results-json: results.json
+          pipeline-results-json: "${{ github.workspace }}/results.json"
           output-results-sarif: veracode-results.sarif
           source-base-path-1: "^com/veracode:src/main/java/com/veracode"
           source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
