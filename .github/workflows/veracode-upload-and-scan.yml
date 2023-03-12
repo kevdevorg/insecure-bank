@@ -52,7 +52,7 @@ jobs:
       - name: Grab Veracode Pipeline Results to convert to SARIF format
         uses: actions/download-artifact@v3
         with:
-          name: veracode_results
+          name: java-app
           
       - name: Convert pipeline scan output to SARIF format
         id: convert
