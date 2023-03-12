@@ -56,7 +56,7 @@ jobs:
           
       - name: Convert upload-and-scan scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-upload-and-scan-results-to-sarif@v1.0.5
+        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
