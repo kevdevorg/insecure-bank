@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: veracode_upload_and_scan_results
+          name: veracode_results
           path: "${{ github.workspace }}/results.json"
           
   results_to_sarif:
@@ -52,7 +52,7 @@ jobs:
       - name: Grab Veracode upload-and-scan Results to convert to SARIF format
         uses: actions/download-artifact@v3
         with:
-          name: veracode_upload_and_scan_results
+          name: veracode_results
           
       - name: Convert upload-and-scan scan output to SARIF format
         id: convert
