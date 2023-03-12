@@ -10,10 +10,10 @@ permissions:
   
 jobs:
 
-  veracode-pipeline-scan:
+  veracode-upload-and-scan:
     # needs the build step before this job will start running
     runs-on: ubuntu-latest
-    name: Veracode Pipeline Scan
+    name: Veracode Upload and Scan
 
     steps:
         # Get the compiled binary from a previous job
@@ -31,7 +31,7 @@ jobs:
           unzip -o vosp-api-wrappers-java-23.3.11.0-dist.zip
           
       - name: Run veracode-upload-and-scan
-        run: java -Dpipeline.debug=true -jar VeracodeJavaAPI.jar -action uploadandscan -vid "${{ secrets.VID }}" -vkey "${{ secrets.VKEY }}" -appname "java-app" -createprofile "true" -teams myteam -criticality VeryHigh -sandboxname "mysandbox" -createsandbox "true" -version "java-app" -filepath "${{ github.workspace }}/insecure-bank.war"  -id "true" -jf "results.json" 
+        run: java -Dpipeline.debug=true -jar VeracodeJavaAPI.jar -action uploadandscan -vid "${{ secrets.VID }}" -vkey "${{ secrets.VKEY }}" -appname "java-app" -createprofile "true" -teams myteam -criticality VeryHigh -sandboxname "mysandbox" -createsandbox "true" -version "java-app" -filepath "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
         # run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VID }}" --veracode_api_key "${{ secrets.VKEY }}" --file "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
         continue-on-error: true
         
@@ -42,21 +42,21 @@ jobs:
           path: "${{ github.workspace }}/results.json"
           
   results_to_sarif:
-    needs: veracode-pipeline-scan
+    needs: veracode-upload-and-scan
     runs-on: ubuntu-latest
 
-    name: Import Pipeline Results to SARIF
+    name: Import upload-and-scan Results to SARIF
     steps:
     
         # Grab the SARIF file from previous Job
-      - name: Grab Veracode Pipeline Results to convert to SARIF format
+      - name: Grab Veracode upload-and-scan Results to convert to SARIF format
         uses: actions/download-artifact@v3
         with:
           name: java-app
           
-      - name: Convert pipeline scan output to SARIF format
+      - name: Convert upload-and-scan scan output to SARIF format
         id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
+        uses: Veracode/veracode-upload-and-scan-results-to-sarif@v1.0.5
         with:
           pipeline-results-json: results.json
           output-results-sarif: veracode-results.sarif
