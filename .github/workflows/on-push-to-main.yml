@@ -6,8 +6,8 @@ on:
       - joseph-veracode
 
 jobs:
-#   call-build-workflow:
-#     uses: ./.github/workflows/maven-build.yml
+    call-build-workflow:
+      uses: ./.github/workflows/maven-build.yml
 #   call-codeql-workflow:
 #     uses: ./.github/workflows/codeql.yml  
 #   call-veracode-workflow:
@@ -19,5 +19,6 @@ jobs:
       secrets: inherit
     call-veracode-upload-and-scan-workflow:
       uses: ./.github/workflows/veracode-upload-and-scan.yml
+      needs: call-build-workflow
       secrets: inherit
 
