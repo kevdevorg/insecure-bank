@@ -41,36 +41,4 @@ jobs:
           name: veracode_upload-andscan-results
           path: "${{ github.workspace }}/results.json"
           
-  results_to_sarif:
-    needs: veracode-upload-and-scan
-    runs-on: ubuntu-latest
 
-    name: Import upload-and-scan Results to SARIF
-    steps:
-    
-        # Grab the SARIF file from previous Job
-      - name: Grab Veracode upload-and-scan Results to convert to SARIF format
-        uses: actions/download-artifact@v3
-        with:
-          name: veracode_upload-andscan-results
-          
-      - name: Convert upload-and-scan scan output to SARIF format
-        id: convert
-        uses: Veracode/veracode-pipeline-scan-results-to-sarif@v1.0.5
-        with:
-          pipeline-results-json: "${{ github.workspace }}/results.json"
-          output-results-sarif: veracode-results.sarif
-          source-base-path-1: "^com/veracode:src/main/java/com/veracode"
-          source-base-path-2: "^WEB-INF:src/main/webapp/WEB-INF"
-          finding-rule-level: "3:1:0"
-          
-      - name: Upload Veracodwe SARIF File for testing
-        uses: actions/upload-artifact@v3
-        with:
-          name: veracode_sarif_results
-          path: "${{ github.workspace }}/veracode-results.sarif"
-
-      - name: upload sarif file to repository
-        uses: github/codeql-action/upload-sarif@v2
-        with: # Path to SARIF file relative to the root of the repository
-          sarif_file: veracode-results.sarif
