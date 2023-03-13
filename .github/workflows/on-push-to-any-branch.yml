@@ -9,6 +9,8 @@
       uses: ./.github/workflows/maven-build.yml
     call-veracode-workflow:
       uses: ./.github/workflows/veracode-scan.yml
+      needs: call-build-workflow
+      secrets: inherit
     call-veracode-upload-and-scan-workflow:
       uses: ./.github/workflows/veracode-upload-and-scan.yml
       needs: call-build-workflow
