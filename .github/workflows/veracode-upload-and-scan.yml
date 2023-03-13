@@ -31,14 +31,8 @@ jobs:
           unzip -o vosp-api-wrappers-java-23.3.11.0-dist.zip
           
       - name: Run veracode-upload-and-scan
-        run: java -Dpipeline.debug=true -jar VeracodeJavaAPI.jar -action uploadandscan -vid "${{ secrets.VID }}" -vkey "${{ secrets.VKEY }}" -appname "java-app" -createprofile "true" -teams myteam -criticality VeryHigh -sandboxname "mysandbox" -createsandbox "true" -version "java-app" -filepath "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
+        run: java -Dpipeline.debug=true -jar VeracodeJavaAPI.jar -action uploadandscan -vid "${{ secrets.VID }}" -vkey "${{ secrets.VKEY }}" -appname "java-app" -createprofile "true" -teams myteam -criticality VeryHigh -sandboxname "mysandbox" -createsandbox "true" -version "java-app" -filepath "${{ github.workspace }}/insecure-bank.war"
         # run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "${{ secrets.VID }}" --veracode_api_key "${{ secrets.VKEY }}" --file "${{ github.workspace }}/insecure-bank.war" -id "true" -jf "results.json" 
         continue-on-error: true
-        
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: veracode_upload-andscan-results
-          path: "${{ github.workspace }}/results.json"
-          
+
 
