@@ -3,7 +3,7 @@ name: On push to main
 on:
   push:
     branches:
-      - joseph-veracode
+      - main
 
 jobs:
     call-build-workflow:
